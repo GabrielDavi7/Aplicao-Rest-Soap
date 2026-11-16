@@ -241,9 +241,7 @@ function App() {
         ? pokemonsDisponiveis.filter((p) => p.id !== pokemonAleatorio?.id)
         : pokemonsDisponiveis;
     if (opcoes.length > 0) {
-      setPokemonAleatorio(
-        opcoes[Math.floor(Math.random() * opcoes.length)],
-      );
+      setPokemonAleatorio(opcoes[Math.floor(Math.random() * opcoes.length)]);
     }
   }, [listaCompleta, pokemonAleatorio]);
 
@@ -514,10 +512,12 @@ function App() {
         }}
       >
         {telaAtiva === "inicio" && (
-          <section className="relative flex min-h-full w-full items-center justify-center overflow-hidden p-6 sm:p-10">
-            <div className="relative z-10 w-full max-w-3xl overflow-hidden rounded-3xl border border-white/20 bg-gradient-to-br from-slate-800/90 via-slate-950/85 to-slate-900/90 p-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.18),0_25px_70px_rgba(0,0,0,0.55)] backdrop-blur-xl sm:p-10">
+          <section className="relative flex min-h-full w-full items-center justify-center p-6 sm:p-10">
+            {/* O card principal agora não tem mais overflow-hidden, permitindo que o popup "vaze" livremente para baixo */}
+            <div className="relative z-10 w-full max-w-3xl rounded-3xl border border-white/20 bg-gradient-to-br from-slate-800/90 via-slate-950/85 to-slate-900/90 p-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.18),0_25px_70px_rgba(0,0,0,0.55)] backdrop-blur-xl sm:p-10">
               <div className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-white/70 to-transparent"></div>
               <div className="pointer-events-none absolute -right-20 -top-28 h-64 w-64 rounded-full bg-white/10 blur-3xl"></div>
+
               <div className="mb-7 text-center">
                 <h2 className="text-3xl font-black text-white sm:text-4xl">
                   Encontre seu Pokémon
@@ -1086,7 +1086,9 @@ function App() {
                               alt=""
                               className="h-10 w-10 object-contain"
                             />
-                            <span className="flex-1">{p.nome.replaceAll("-", " ")}</span>
+                            <span className="flex-1">
+                              {p.nome.replaceAll("-", " ")}
+                            </span>
                             <span className="font-mono text-xs text-slate-500">
                               Nº {String(p.id).padStart(4, "0")}
                             </span>
@@ -1112,15 +1114,12 @@ function App() {
                 const membro = timePokemon[index];
                 return (
                   <article
-                    key={membro ? `${membro.id}-${membro.nome}` : `slot-${index}`}
-                    onClick={() =>
-                      membro && consultarPokemonDoTime(membro)
+                    key={
+                      membro ? `${membro.id}-${membro.nome}` : `slot-${index}`
                     }
+                    onClick={() => membro && consultarPokemonDoTime(membro)}
                     onKeyDown={(e) => {
-                      if (
-                        membro &&
-                        (e.key === "Enter" || e.key === " ")
-                      ) {
+                      if (membro && (e.key === "Enter" || e.key === " ")) {
                         e.preventDefault();
                         consultarPokemonDoTime(membro);
                       }
@@ -1149,7 +1148,10 @@ function App() {
                             setTimePokemon((timeAtual) =>
                               timeAtual.filter((p) => p.id !== membro.id),
                             );
-                            if (pokemonConsultadoTime?.id_pokedex === Number(membro.id)) {
+                            if (
+                              pokemonConsultadoTime?.id_pokedex ===
+                              Number(membro.id)
+                            ) {
                               setPokemonConsultadoTime(null);
                             }
                           }}
@@ -1205,7 +1207,9 @@ function App() {
                 );
               })}
             </div>
-            {(carregandoConsultaTime || erroConsultaTime || pokemonConsultadoTime) && (
+            {(carregandoConsultaTime ||
+              erroConsultaTime ||
+              pokemonConsultadoTime) && (
               <section
                 ref={consultaTimeRef}
                 aria-live="polite"
@@ -1239,7 +1243,11 @@ function App() {
                           {pokemonConsultadoTime.nome.replaceAll("-", " ")}
                         </h2>
                         <p className="mt-1 font-mono font-bold text-slate-400">
-                          Nº {String(pokemonConsultadoTime.id_pokedex).padStart(4, "0")}
+                          Nº{" "}
+                          {String(pokemonConsultadoTime.id_pokedex).padStart(
+                            4,
+                            "0",
+                          )}
                         </p>
                         <div className="mt-3 flex flex-wrap justify-center gap-2 sm:justify-start">
                           {pokemonConsultadoTime.tipos.map((tipo) => (
@@ -1280,14 +1288,16 @@ function App() {
                             Habilidades
                           </h3>
                           <div className="flex flex-wrap justify-center gap-2">
-                            {pokemonConsultadoTime.habilidades.map((habilidade) => (
-                              <span
-                                key={habilidade}
-                                className="rounded-lg border border-violet-500/20 bg-violet-500/10 px-3 py-2 text-sm font-bold capitalize text-violet-300"
-                              >
-                                {habilidade.replaceAll("-", " ")}
-                              </span>
-                            ))}
+                            {pokemonConsultadoTime.habilidades.map(
+                              (habilidade) => (
+                                <span
+                                  key={habilidade}
+                                  className="rounded-lg border border-violet-500/20 bg-violet-500/10 px-3 py-2 text-sm font-bold capitalize text-violet-300"
+                                >
+                                  {habilidade.replaceAll("-", " ")}
+                                </span>
+                              ),
+                            )}
                           </div>
                         </div>
 
@@ -1296,19 +1306,21 @@ function App() {
                             Linha evolutiva
                           </h3>
                           <div className="flex flex-wrap justify-center gap-2">
-                            {pokemonConsultadoTime.cadeia_evolucao.map((evolucao) => (
-                              <span
-                                key={evolucao.id}
-                                className={`rounded-lg border px-3 py-2 text-sm font-bold capitalize ${
-                                  Number(evolucao.id) ===
-                                  pokemonConsultadoTime.id_pokedex
-                                    ? "border-blue-500 bg-blue-500/20 text-blue-300"
-                                    : "border-slate-700 bg-slate-800 text-slate-300"
-                                }`}
-                              >
-                                {evolucao.nome.replaceAll("-", " ")}
-                              </span>
-                            ))}
+                            {pokemonConsultadoTime.cadeia_evolucao.map(
+                              (evolucao) => (
+                                <span
+                                  key={evolucao.id}
+                                  className={`rounded-lg border px-3 py-2 text-sm font-bold capitalize ${
+                                    Number(evolucao.id) ===
+                                    pokemonConsultadoTime.id_pokedex
+                                      ? "border-blue-500 bg-blue-500/20 text-blue-300"
+                                      : "border-slate-700 bg-slate-800 text-slate-300"
+                                  }`}
+                                >
+                                  {evolucao.nome.replaceAll("-", " ")}
+                                </span>
+                              ),
+                            )}
                           </div>
                         </div>
                       </div>
@@ -1350,14 +1362,16 @@ function App() {
                             Golpes disponíveis
                           </h3>
                           <div className="flex max-h-40 flex-wrap justify-center gap-2 overflow-y-auto">
-                            {pokemonConsultadoTime.movimentos.map((movimento) => (
-                              <span
-                                key={movimento}
-                                className="rounded-lg border border-red-800/30 bg-red-900/20 px-2.5 py-1.5 text-xs font-bold capitalize text-red-300"
-                              >
-                                {movimento.replaceAll("-", " ")}
-                              </span>
-                            ))}
+                            {pokemonConsultadoTime.movimentos.map(
+                              (movimento) => (
+                                <span
+                                  key={movimento}
+                                  className="rounded-lg border border-red-800/30 bg-red-900/20 px-2.5 py-1.5 text-xs font-bold capitalize text-red-300"
+                                >
+                                  {movimento.replaceAll("-", " ")}
+                                </span>
+                              ),
+                            )}
                           </div>
                         </div>
                       </div>
