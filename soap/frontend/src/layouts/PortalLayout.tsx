@@ -8,12 +8,10 @@ import {
   MapPin,
   ChartNoAxesCombined,
   CodeXml,
-  Info,
   Menu,
   X,
 } from 'lucide-react';
 import { Logo, ThemeToggle, SearchBar } from '../components/ui';
-import { useFootball } from '../hooks/useFootball';
 const links = [
   ['/', 'Início', House],
   ['/partidas', 'Partidas', CalendarDays],
@@ -22,7 +20,6 @@ const links = [
   ['/estadios', 'Estádios', MapPin],
   ['/comparacoes', 'Estatísticas', ChartNoAxesCombined],
   ['/laboratorio', 'Laboratório SOAP', CodeXml],
-  ['/sobre', 'Sobre o projeto', Info],
 ] as const;
 export function Header({ open, toggle }: { open: boolean; toggle: () => void }) {
   const [query, setQuery] = useState('');
@@ -82,7 +79,6 @@ export function Sidebar({ open, close }: { open: boolean; close: () => void }) {
 }
 export default function PortalLayout() {
   const [open, setOpen] = useState(false);
-  const { source, setSource } = useFootball();
   return (
     <>
       <a className="skip-link" href="#main">
@@ -96,17 +92,7 @@ export default function PortalLayout() {
             <span>
               Futebol <span>/</span> Acervo de seleções
             </span>
-            <label>
-              Fonte{' '}
-              <select
-                aria-label="Fonte dos dados"
-                value={source}
-                onChange={(e) => setSource(e.target.value as 'live' | 'snapshot')}
-              >
-                <option value="live">SOAP online</option>
-                <option value="snapshot">Captura local real</option>
-              </select>
-            </label>
+            <span>SOAP online</span>
           </div>
           <Outlet />
           <footer className="footer">
