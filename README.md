@@ -11,7 +11,7 @@ O objetivo do projeto é explorar a diversidade tecnológica de ecossistemas web
 Para facilitar a avaliação e isolar os ecossistemas, o projeto foi dividido em dois diretórios principais:
 
 - **[`/rest`](./rest/)**: Aplicação Full-Stack (Python/FastAPI + React) consumindo a PokeAPI.
-- **[`/soap`](./soap/)**: Aplicação consumindo um Web Service baseado em WSDL _(a ser definido pela equipe)_.
+- **[`/soap`](./soap/)**: Aplicação consumindo um Web Service baseado em WSDL (Football Pool Web Service)
 
 Cada diretório possui seu próprio `README.md` com instruções detalhadas de instalação, execução e exemplos dos dados trafegados.
 
